@@ -77,7 +77,7 @@ public class CustomAdapter extends ArrayAdapter {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.deleteData(persons1.getFname());
+                            db.deleteData(persons1.getPhone());
                             loadEmployees();
                         }
                     });
@@ -153,7 +153,7 @@ public class CustomAdapter extends ArrayAdapter {
                     return;
                 }
 
-                boolean updated = db.updateData(newFname , newLname , newPhone , newAdd , persons.getFname());
+                boolean updated = db.updateData(newFname , newLname , newPhone , newAdd , persons.getPhone());
 
                 if(updated){
                     Toast.makeText(context , "Updated successfully" , Toast.LENGTH_SHORT).show();

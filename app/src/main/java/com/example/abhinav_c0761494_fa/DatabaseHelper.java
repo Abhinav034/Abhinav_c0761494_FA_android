@@ -67,14 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
-    public Integer deleteData(String name){
+    public Integer deleteData(String phone){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_NAME , COL2 +"=?" ,new String[]{name});
+        return db.delete(TABLE_NAME , COL4 +"=?" ,new String[]{phone});
 
     }
 
-    public boolean updateData (String newFname , String newLname , String newNumber , String newAddress , String name){
+    public boolean updateData (String newFname , String newLname , String newNumber , String newAddress , String phone){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -84,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL4 , newNumber);
         contentValues.put(COL5 , newAddress);
 
-        db.update(TABLE_NAME , contentValues , COL2 +"=?" , new String[]{name});
+        db.update(TABLE_NAME , contentValues , COL4 +"=?" , new String[]{phone});
         return true;
 
     }
