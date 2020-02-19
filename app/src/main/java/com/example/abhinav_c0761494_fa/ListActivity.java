@@ -20,6 +20,7 @@ public class ListActivity extends AppCompatActivity {
 
     ListView listView;
     List<Persons>persons = new ArrayList<>();
+    List<Persons> searchList = new ArrayList<>();
 
     DatabaseHelper db;
     CustomAdapter customAdapter;
@@ -43,12 +44,34 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                String text = s.toString();
+                searchList.clear();
+                if(!text.isEmpty()){
+
+                    for (Persons person:persons) {
+                        if(person.getFname().contains(text)){
+                            searchList.add(person);
+                        }
+                    }
+                } else{
+                    searchList.addAll(persons);
+
+                }
+
+                customAdapter = new CustomAdapter(ListActivity.this , R.layout.list_layout , searchList , db);
+                listView.setAdapter(customAdapter);
+
+
+
             }
+
+
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                filter(s.toString());
+
+
 
 
             }
@@ -61,6 +84,7 @@ public class ListActivity extends AppCompatActivity {
         if (cursor.getCount() == 0){
             Toast.makeText(ListActivity.this , "No data available", Toast.LENGTH_SHORT).show();
         }else{
+
             while (cursor.moveToNext()){
 
                 persons.add(new Persons(cursor.getString(0),
@@ -78,34 +102,6 @@ public class ListActivity extends AppCompatActivity {
         customAdapter = new CustomAdapter(this , R.layout.list_layout , persons , db);
         listView.setAdapter(customAdapter);
 
-
-
-
-
-
-
-
-
-
-    }
-
-    private void filter(String text) {
-
-        List<Persons> filterdPersons = new ArrayList<>();
-
-        for(Persons person : persons){
-
-            if(person.getFname().toLowerCase().contains(text.toLowerCase())){
-
-                filterdPersons.add(person);
-
-
-            }
-
-
-
-        }
-        customAdapter.filterList(filterdPersons);
 
 
     }

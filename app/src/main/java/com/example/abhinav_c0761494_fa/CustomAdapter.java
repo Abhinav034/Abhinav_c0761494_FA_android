@@ -26,9 +26,6 @@ public class CustomAdapter extends ArrayAdapter {
     List<Persons> persons;
     DatabaseHelper db;
 
-    List<Persons>filterList = new ArrayList<>();
-
-    boolean searching = false;
 
 
 
@@ -57,61 +54,46 @@ public class CustomAdapter extends ArrayAdapter {
 
         Button updateButton = view.findViewById(R.id.updateButton);
         Button deleteButton = view.findViewById(R.id.deleteButton);
-        if(searching){
 
 
+            final Persons persons1 = persons.get(position);
+            fname.setText(persons1.getFname());
+            lname.setText(persons1.getLname());
+            phone.setText(persons1.getPhone());
+            address.setText(persons1.getAddress());
 
+            updateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updatePerson(persons1);
+                }
+            });
 
-        }else{
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.deleteData(persons1.getFname());
+                            loadEmployees();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-
-
-
-
+                        }
+                    });
+                    builder.create();
+                    builder.show();
+                }
+            });
+            return view;
         }
-        final Persons persons1 = persons.get(position);
 
-
-        fname.setText(persons1.getFname());
-        lname.setText(persons1.getLname());
-        phone.setText(persons1.getPhone());
-        address.setText(persons1.getAddress());
-
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePerson(persons1);
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        db.deleteData(persons1.getFname());
-                        loadEmployees();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                builder.create();
-                builder.show();
-            }
-        });
-
-
-
-
-        return view;
-    }
 
     private void updatePerson(final Persons persons) {
 
@@ -203,17 +185,7 @@ public class CustomAdapter extends ArrayAdapter {
 
     }
 
-    public void filterList(List<Persons> filterdPersons) {
 
-        filterList = filterdPersons;
-
-        notifyDataSetChanged();
-
-
-
-
-
-    }
 }
 
 
